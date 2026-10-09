@@ -270,38 +270,23 @@ if submitted:
         with st.spinner("🔍 Evaluating the application details..."):
             time.sleep(0.5)
             prediction = model.predict(input_df)[0]
-            probabilities = model.predict_proba(input_df)[0]
 
         st.divider()
-        st.subheader("Prediction Result")
 
-        # Assumes the target was encoded as 1 = approved and 0 = rejected.
-        if str(prediction).strip().lower() in {"1", "1.0", "approved", "yes", "true"}:
-            st.success("## ✅ Predicted class: Approved")
-        else:
-            st.error("## ❌ Predicted class: Rejected")
+        # Preserve the same result messages as the original application.
+        approved = int(prediction) == 1
 
-        st.caption(
-            "This is the model's predicted class, not a real lender's decision."
-        )
-
-        classes = list(model.classes_)
-        if 1 in classes:
-            approval_index = classes.index(1)
-            approval_probability = float(probabilities[approval_index])
-            st.metric(
-                "Model-estimated approval probability",
-                f"{approval_probability:.2%}",
+        if approved:
+            st.success("## ✅ Congratulations! Your loan has been **Approved**.")
+            st.markdown(
+                "Based on the details provided, your application has been "
+                "accepted. Our team will contact you shortly."
             )
         else:
-            st.write("Predicted class:", str(prediction))
-            st.write(
-                "The model's classes are:",
-                ", ".join(str(value) for value in classes),
-            )
-            st.caption(
-                "Approval probability is shown only when class 1 exists; "
-                "verify that class 1 means approval in your training labels."
+            st.error("## ❌ We're sorry. Your loan has been **Rejected**.")
+            st.markdown(
+                "Based on the details provided, we are unable to approve "
+                "your application at this time."
             )
 
     except Exception as exc:
