@@ -95,26 +95,188 @@ def get_education_categories(pipeline):
 st.markdown(
     """
     <style>
+        :root {
+            --navy: #12304a;
+            --navy-deep: #0b2033;
+            --blue: #2463eb;
+            --blue-soft: #eaf1ff;
+            --ink: #172b3a;
+            --muted: #657789;
+            --line: #dfe7ef;
+            --surface: #ffffff;
+            --page: #f3f6fa;
+        }
+
         .stApp {
-            background-color: #f5f7fa;
+            background:
+                radial-gradient(circle at 10% 0%, #e4edff 0, transparent 28rem),
+                var(--page);
+            color: var(--ink);
         }
+
+        [data-testid="stHeader"] {
+            background: rgba(243, 246, 250, 0.85);
+        }
+
         .block-container {
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-            max-width: 900px;
+            max-width: 1000px;
+            padding-top: 1.6rem;
+            padding-bottom: 3rem;
         }
-        .stButton > button {
-            background-color: #1a3c5e;
-            color: white;
-            font-size: 16px;
-            border-radius: 8px;
-            padding: 0.6rem 2rem;
-            width: 100%;
-            border: none;
+
+        .hero {
+            background: linear-gradient(125deg, #0b2033 0%, #17456b 62%, #2463a4 100%);
+            color: #fff;
+            padding: 2rem 2.1rem;
+            border-radius: 22px;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 16px 40px rgba(17, 48, 74, 0.17);
+            position: relative;
+            overflow: hidden;
         }
-        .stButton > button:hover {
-            background-color: #25527e;
-            color: white;
+
+        .hero:after {
+            content: "";
+            position: absolute;
+            width: 210px;
+            height: 210px;
+            border: 1px solid rgba(255,255,255,.16);
+            border-radius: 50%;
+            right: -55px;
+            top: -85px;
+            box-shadow: 0 0 0 24px rgba(255,255,255,.04),
+                        0 0 0 48px rgba(255,255,255,.03);
+        }
+
+        .hero-kicker {
+            color: #c9dcff;
+            text-transform: uppercase;
+            letter-spacing: .13em;
+            font-size: .76rem;
+            font-weight: 700;
+            margin-bottom: .6rem;
+        }
+
+        .hero-title {
+            font-size: clamp(1.8rem, 4vw, 2.55rem);
+            line-height: 1.15;
+            font-weight: 750;
+            margin: 0 0 .65rem 0;
+            color: #fff;
+        }
+
+        .hero-copy {
+            max-width: 650px;
+            color: #e1ebf7;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .trust-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .55rem;
+            margin-top: 1.2rem;
+        }
+
+        .trust-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            border: 1px solid rgba(255,255,255,.22);
+            background: rgba(255,255,255,.09);
+            color: #f3f7ff;
+            padding: .4rem .7rem;
+            border-radius: 999px;
+            font-size: .78rem;
+        }
+
+        .section-intro {
+            margin: 1.25rem 0 .35rem 0;
+            color: var(--navy);
+            font-size: 1.12rem;
+            font-weight: 750;
+        }
+
+        .section-subtitle {
+            color: var(--muted);
+            font-size: .9rem;
+            margin: 0 0 .85rem 0;
+        }
+
+        div[data-testid="stForm"] {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 1.25rem 1.4rem 1.4rem 1.4rem;
+            box-shadow: 0 8px 26px rgba(24, 50, 75, .055);
+        }
+
+        div[data-testid="stForm"] label {
+            color: #31495d;
+            font-weight: 600;
+            font-size: .9rem;
+        }
+
+        div[data-testid="stNumberInput"] input,
+        div[data-testid="stSelectbox"] [data-baseweb="select"] > div {
+            border-radius: 10px;
+        }
+
+        div[data-testid="stNumberInput"] input:focus,
+        div[data-testid="stSelectbox"] [data-baseweb="select"] > div:focus-within {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 1px var(--blue);
+        }
+
+        .stButton > button,
+        div[data-testid="stFormSubmitButton"] > button {
+            background: linear-gradient(100deg, #17456b, #2463eb);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            border: 0;
+            border-radius: 11px;
+            min-height: 3rem;
+            box-shadow: 0 7px 16px rgba(36, 99, 235, .18);
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+
+        .stButton > button:hover,
+        div[data-testid="stFormSubmitButton"] > button:hover {
+            color: #fff;
+            border: 0;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 22px rgba(36, 99, 235, .25);
+        }
+
+        .stAlert {
+            border-radius: 14px;
+        }
+
+        .result-note {
+            color: var(--muted);
+            font-size: .85rem;
+            margin-top: .75rem;
+        }
+
+        hr {
+            border-color: var(--line);
+        }
+
+        @media (max-width: 640px) {
+            .block-container {
+                padding: 1rem .75rem 2rem .75rem;
+            }
+            .hero {
+                padding: 1.45rem 1.25rem;
+                border-radius: 17px;
+            }
+            div[data-testid="stForm"] {
+                padding: 1rem .9rem;
+                border-radius: 15px;
+            }
         }
     </style>
     """,
@@ -124,16 +286,28 @@ st.markdown(
 # -------------------------------------------------------------------
 # Header
 # -------------------------------------------------------------------
-st.title("🏦 Loan Application Form")
-st.write(
-    "Enter the details below to obtain a model-based prediction. "
-    "Avoid entering unnecessary personal information."
+st.markdown(
+    """
+    <div class="hero">
+        <div class="hero-kicker">Smart lending • Application portal</div>
+        <div class="hero-title">🏦 Loan Application</div>
+        <p class="hero-copy">
+            Enter the applicant details below to receive a machine-learning
+            prediction. Complete each section carefully for a consistent result.
+        </p>
+        <div class="trust-row">
+            <span class="trust-pill">✦ AI-assisted prediction</span>
+            <span class="trust-pill">✓ Guided application</span>
+            <span class="trust-pill">⌁ Quick result</span>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
-st.info(
-    "This application provides an educational machine-learning prediction. "
-    "It is not an actual lender decision or a guarantee of loan approval."
+st.warning(
+    "Educational prediction only — this is not a lender decision or a guarantee "
+    "of loan approval."
 )
-st.divider()
 
 # Build select-box options from the categories learned during training.
 job_options = get_encoder_categories(
@@ -166,7 +340,8 @@ education_options = get_education_categories(model)
 # Form
 # -------------------------------------------------------------------
 with st.form("loan_form"):
-    st.subheader("👤 Personal Details")
+    st.markdown('<div class="section-intro">01 · 👤 Personal details</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-subtitle">Basic information about the applicant.</div>', unsafe_allow_html=True)
     c1, c2 = st.columns(2)
 
     with c1:
@@ -180,7 +355,8 @@ with st.form("loan_form"):
             "Account Balance (€)", value=1000, step=100
         )
 
-    st.subheader("💳 Financial Details")
+    st.markdown('<div class="section-intro">02 · 💳 Financial details</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-subtitle">Account and existing loan information.</div>', unsafe_allow_html=True)
     c3, c4 = st.columns(2)
 
     with c3:
@@ -195,7 +371,8 @@ with st.form("loan_form"):
             "Number of previous contacts", min_value=0, value=0, step=1
         )
 
-    st.subheader("📞 Contact Details")
+    st.markdown('<div class="section-intro">03 · 📞 Contact details</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-subtitle">Recent campaign and contact history.</div>', unsafe_allow_html=True)
     c5, c6 = st.columns(2)
 
     with c5:
@@ -296,3 +473,9 @@ if submitted:
             "are compatible with this environment."
         )
         st.exception(exc)
+
+
+st.markdown(
+    '<p class="result-note">Loan Application Portal · Predictions are generated by a trained machine-learning model and should be reviewed by a qualified decision-maker.</p>',
+    unsafe_allow_html=True,
+)
